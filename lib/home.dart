@@ -1,5 +1,6 @@
 // lib/home.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'todoTasks.dart';
 
 class TodoListScreen extends StatefulWidget {
@@ -10,7 +11,7 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-  List<String> tasks = [];
+  List<String> todotasks = [];
   List<bool> completed = [];
   List<String> completedTasks = [];
 
@@ -18,11 +19,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          titleSpacing: 0,
           title: const Text(
-            'My Todo App',
+            'Listify',
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.pinkAccent),
+      // Drawer
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -59,54 +62,123 @@ class _TodoListScreenState extends State<TodoListScreen> {
           ],
         ),
       ),
-      body: tasks.isEmpty
+      body: todotasks.isEmpty && completedTasks.isEmpty
           ? const Center(
               child: Text(
                 "No tasks",
                 style: TextStyle(fontSize: 23.0),
               ),
             )
-          : ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
-                if (index >= completed.length) {
-                  completed.add(false);
-                }
-                return Column(
-                  children: [
-                    ListTile(
-                      leading: Checkbox(
-                        value: completed[index],
-                        onChanged: (bool? value) {
-                          setState(() {
-                            completed[index] = value!;
-                            if (completed[index]) {
-                              completedTasks.add(tasks[index]);
-                            } else {
-                              completedTasks.remove(tasks[index]);
-                            }
-                          });
-                        },
-                      ),
-                      title: Text(
-                        tasks[index],
-                        style: const TextStyle(fontSize: 18.0),
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete, size: 19.0),
-                        onPressed: () {
-                          setState(() {
-                            tasks.removeAt(index);
-                            completed.removeAt(index);
-                          });
-                        },
-                      ),
+          : Expanded(
+              child: ListView(
+              children: [
+                if (todotasks.isNotEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "To-do",
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
                     ),
-                    if (index != tasks.length - 1) const Divider()
-                  ],
-                );
-              },
-            ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: todotasks.length,
+                    itemBuilder: (context, index) {
+                      if (index >= completed.length) {
+                        completed.add(false);
+                      }
+                      return Column(
+                        children: [
+                          ListTile(
+                            leading: Checkbox(
+                              value: completed[index],
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  completed[index] = value!;
+                                  if (completed[index]) {
+                                    completedTasks.add(todotasks[index]);
+                                    todotasks.removeAt(index);
+                                  } else {
+                                    completedTasks.remove(todotasks[index]);
+                                  }
+                                });
+                              },
+                            ),
+                            title: Text(
+                              todotasks[index],
+                              style: const TextStyle(fontSize: 18.0),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, size: 19.0),
+                              onPressed: () {
+                                setState(() {
+                                  todotasks.removeAt(index);
+                                  completed.removeAt(index);
+                                });
+                              },
+                            ),
+                          ),
+                          if (index != todotasks.length - 1) const Divider()
+                        ],
+                      );
+                    },
+                  ),
+                ],
+                if (completedTasks.isNotEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Completed",
+                      style: TextStyle(
+                          fontSize: 19.0, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            // leading: Checkbox(
+                            //   value: completed[index],
+                            //   onChanged: (bool? value) {
+                            //     setState(() {
+                            //       completed[index] = value!;
+                            //       if (completed[index]) {
+                            //         todotasks.add(completedTasks[index]);
+                            //         completedTasks.removeAt(index);
+                            //       } else {
+                            //         todotasks.remove(completedTasks[index]);
+                            //       }
+                            //     });
+                            //   },
+                            // ),
+                            title: Text(
+                              completedTasks[index],
+                              style: const TextStyle(fontSize: 18.0),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, size: 19.0),
+                              onPressed: () {
+                                setState(() {
+                                  completedTasks.removeAt(index);
+                                  completed.removeAt(index);
+                                });
+                              },
+                            ),
+                          ),
+                          if (index != completedTasks.length - 1)
+                            const Divider()
+                        ],
+                      );
+                    },
+                  )
+                ]
+              ],
+            )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showAddTaskDialog(context);
@@ -119,7 +191,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   void _showAddTaskDialog(BuildContext context) {
     TextEditingController taskController = TextEditingController();
-
+// Add task dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -139,7 +211,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
               child: const Text('Add'),
               onPressed: () {
                 setState(() {
-                  tasks.add(taskController.text);
+                  todotasks.add(taskController.text);
                   completed.add(false);
                 });
                 Navigator.of(context).pop();
