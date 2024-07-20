@@ -1,4 +1,6 @@
 // lib/home.dart
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'todoTasks.dart';
@@ -19,12 +21,15 @@ class _TodoListScreenState extends State<TodoListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          titleSpacing: 0,
-          title: const Text(
-            'Listify',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.pinkAccent),
+        titleSpacing: 0,
+        title: const Text(
+          'Listify',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.pinkAccent,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+
       // Drawer
       drawer: Drawer(
         child: ListView(
@@ -135,47 +140,49 @@ class _TodoListScreenState extends State<TodoListScreen> {
                           fontSize: 19.0, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   physics: const NeverScrollableScrollPhysics(),
-                  //   itemBuilder: (context, index) {
-                  //     return Column(
-                  //       children: [
-                  //         ListTile(
-                  //           leading: Checkbox(
-                  //             value: completed[index],
-                  //             onChanged: (bool? value) {
-                  //               setState(() {
-                  //                 completed[index] = value!;
-                  //                 if (completed[index]) {
-                  //                   todotasks.add(completedTasks[index]);
-                  //                   completedTasks.removeAt(index);
-                  //                 } else {
-                  //                   todotasks.remove(completedTasks[index]);
-                  //                 }
-                  //               });
-                  //             },
-                  //           ),
-                  //           title: Text(
-                  //             completedTasks[index],
-                  //             style: const TextStyle(fontSize: 18.0),
-                  //           ),
-                  //           trailing: IconButton(
-                  //             icon: const Icon(Icons.delete, size: 19.0),
-                  //             onPressed: () {
-                  //               setState(() {
-                  //                 completedTasks.removeAt(index);
-                  //                 completed.removeAt(index);
-                  //               });
-                  //             },
-                  //           ),
-                  //         ),
-                  //         if (index != completedTasks.length - 1)
-                  //           const Divider()
-                  //       ],
-                  //     );
-                  //   },
-                  // )
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: completedTasks.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            // leading: Checkbox(
+                            //   value: completed[index],
+                            //   onChanged: (bool? value) {
+                            //     setState(() {
+                            //       completed[index] = value!;
+                            //       if (completed[index]) {
+                            //         todotasks.add(completedTasks[index]);
+                            //         completedTasks.removeAt(index);
+                            //       } else {
+                            //         todotasks.remove(completedTasks[index]);
+                            //       }
+                            //     });
+                            //   },
+                            // ),
+                            title: Text(
+                              completedTasks[index],
+                              style: const TextStyle(
+                                  fontSize: 18.0,
+                                  decoration: TextDecoration.lineThrough),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, size: 19.0),
+                              onPressed: () {
+                                setState(() {
+                                  completedTasks.removeAt(index);
+                                });
+                              },
+                            ),
+                          ),
+                          if (index != completedTasks.length - 1)
+                            const Divider()
+                        ],
+                      );
+                    },
+                  )
                 ]
               ],
             )),
@@ -184,7 +191,11 @@ class _TodoListScreenState extends State<TodoListScreen> {
           _showAddTaskDialog(context);
         },
         tooltip: 'Add task',
-        child: const Icon(Icons.add),
+        backgroundColor: Color.fromARGB(255, 255, 111, 159),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
