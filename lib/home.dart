@@ -135,47 +135,47 @@ class _TodoListScreenState extends State<TodoListScreen> {
                           fontSize: 19.0, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          ListTile(
-                            // leading: Checkbox(
-                            //   value: completed[index],
-                            //   onChanged: (bool? value) {
-                            //     setState(() {
-                            //       completed[index] = value!;
-                            //       if (completed[index]) {
-                            //         todotasks.add(completedTasks[index]);
-                            //         completedTasks.removeAt(index);
-                            //       } else {
-                            //         todotasks.remove(completedTasks[index]);
-                            //       }
-                            //     });
-                            //   },
-                            // ),
-                            title: Text(
-                              completedTasks[index],
-                              style: const TextStyle(fontSize: 18.0),
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, size: 19.0),
-                              onPressed: () {
-                                setState(() {
-                                  completedTasks.removeAt(index);
-                                  completed.removeAt(index);
-                                });
-                              },
-                            ),
-                          ),
-                          if (index != completedTasks.length - 1)
-                            const Divider()
-                        ],
-                      );
-                    },
-                  )
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   itemBuilder: (context, index) {
+                  //     return Column(
+                  //       children: [
+                  //         ListTile(
+                  //           leading: Checkbox(
+                  //             value: completed[index],
+                  //             onChanged: (bool? value) {
+                  //               setState(() {
+                  //                 completed[index] = value!;
+                  //                 if (completed[index]) {
+                  //                   todotasks.add(completedTasks[index]);
+                  //                   completedTasks.removeAt(index);
+                  //                 } else {
+                  //                   todotasks.remove(completedTasks[index]);
+                  //                 }
+                  //               });
+                  //             },
+                  //           ),
+                  //           title: Text(
+                  //             completedTasks[index],
+                  //             style: const TextStyle(fontSize: 18.0),
+                  //           ),
+                  //           trailing: IconButton(
+                  //             icon: const Icon(Icons.delete, size: 19.0),
+                  //             onPressed: () {
+                  //               setState(() {
+                  //                 completedTasks.removeAt(index);
+                  //                 completed.removeAt(index);
+                  //               });
+                  //             },
+                  //           ),
+                  //         ),
+                  //         if (index != completedTasks.length - 1)
+                  //           const Divider()
+                  //       ],
+                  //     );
+                  //   },
+                  // )
                 ]
               ],
             )),
