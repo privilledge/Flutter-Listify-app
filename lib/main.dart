@@ -15,7 +15,15 @@ class TodoApp extends StatelessWidget {
       title: 'Todo app',
       theme: ThemeData(primarySwatch: Colors.teal),
       home: const TodoListScreen(),
-      routes: {'/todoTasks': (context) => const TodoTasks()},
+      onGenerateRoute: (settings) {
+        if (settings.name == "/todotasks") {
+          final args = settings.arguments as List<String>;
+          return MaterialPageRoute(
+            builder: (context) => TodoTasks(todotasks: args),
+          );
+        }
+        return null;
+      },
     );
   }
 }

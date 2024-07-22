@@ -52,12 +52,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
               title: Text("To-do tasks"),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TodoTasks(todotasks = todotasks),
-                  ) as String,
-                );
+                Navigator.pushNamed(context, 'todotasks', arguments: todotasks);
               },
             ),
             ListTile(

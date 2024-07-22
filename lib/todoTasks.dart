@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 
 class TodoTasks extends StatelessWidget {
-  const TodoTasks(List<String> list, {super.key});
+  final List<String> todotasks;
+  TodoTasks({super.key, required this.todotasks});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class TodoTasks extends StatelessWidget {
         ),
         body: ListView.builder(itemBuilder: (context, index) {
           return Column(
-            children: const [
+            children: [
               ListTile(
                 title: Text(
                   todotasks[index],
