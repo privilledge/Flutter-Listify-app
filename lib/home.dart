@@ -52,7 +52,12 @@ class _TodoListScreenState extends State<TodoListScreen> {
               title: Text("To-do tasks"),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/todoTasks');
+                Navigator.pushNamed(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TodoTasks(todotasks = todotasks),
+                  ) as String,
+                );
               },
             ),
             ListTile(
@@ -148,20 +153,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       return Column(
                         children: [
                           ListTile(
-                            // leading: Checkbox(
-                            //   value: completed[index],
-                            //   onChanged: (bool? value) {
-                            //     setState(() {
-                            //       completed[index] = value!;
-                            //       if (completed[index]) {
-                            //         todotasks.add(completedTasks[index]);
-                            //         completedTasks.removeAt(index);
-                            //       } else {
-                            //         todotasks.remove(completedTasks[index]);
-                            //       }
-                            //     });
-                            //   },
-                            // ),
                             title: Text(
                               completedTasks[index],
                               style: const TextStyle(
