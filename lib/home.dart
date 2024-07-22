@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'todoTasks.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TodoListScreen extends StatefulWidget {
   const TodoListScreen({super.key});
@@ -16,6 +17,30 @@ class _TodoListScreenState extends State<TodoListScreen> {
   List<String> todotasks = [];
   List<bool> completed = [];
   List<String> completedTasks = [];
+  @override
+  void initState() {
+    super.initState();
+    _loadTasks();
+  }
+
+  _loadTasks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      todotasks = prefs.getStringList('todotasks') ?? [];
+      completed =
+          prefs.getStringList('completed')?.map((e) => e == 'true').toList() ??
+              [];
+      completedTasks = prefs.getStringList('completedTasks') ?? [];
+    });
+  }
+
+  _saveTasks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('todotasks', todotasks);
+    prefs.setStringList(
+        'completed', completed.map((e) => e.toString()).toList());
+    prefs.setStringList('completedTasks', completedTasks);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +48,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
       appBar: AppBar(
         titleSpacing: 0,
         title: const Text(
-          'Listify',
+          'Listiffy',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.pinkAccent,
@@ -49,7 +74,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
             ),
             ListTile(
               leading: Icon(Icons.pending_actions),
-              title: Text("To-do tasks"),
+              title: Text("To-do tasks page"),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, 'todotasks', arguments: todotasks);
