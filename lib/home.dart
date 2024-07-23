@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'todoTasks.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'todoTasks.dart';
 
 class TodoListScreen extends StatefulWidget {
   const TodoListScreen({super.key});
@@ -15,7 +14,7 @@ class TodoListScreen extends StatefulWidget {
 class _TodoListScreenState extends State<TodoListScreen> {
   List<String> todotasks = [];
   List<bool> completed = [];
-  List<String> completedTasks = [];
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +28,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
       completed =
           prefs.getStringList('completed')?.map((e) => e == 'true').toList() ??
               [];
-      completedTasks = prefs.getStringList('completedTasks') ?? [];
     });
   }
 
@@ -38,7 +36,17 @@ class _TodoListScreenState extends State<TodoListScreen> {
     prefs.setStringList('todotasks', todotasks);
     prefs.setStringList(
         'completed', completed.map((e) => e.toString()).toList());
-    prefs.setStringList('completedTasks', completedTasks);
+  }
+
+  void _markTaskAsCompleted(int index) {
+    setState(() {
+      // Update the completed list
+      completed[index] = true;
+      // Remove the task from the todo list
+      todotasks.removeAt(index);
+      completed.removeAt(index);
+    });
+    _saveTasks();
   }
 
   @override
@@ -47,7 +55,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
       appBar: AppBar(
         titleSpacing: 0,
         title: const Text(
-          'Listify',
+          'Listiffy',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.pinkAccent,
@@ -76,129 +84,68 @@ class _TodoListScreenState extends State<TodoListScreen> {
               title: Text("To-do tasks page"),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, 'todotasks', arguments: todotasks);
+                Navigator.pushNamed(
+                  context,
+                  '/todotasks',
+                  arguments: {
+                    'todotasks': todotasks,
+                    'onTaskComplete': _markTaskAsCompleted,
+                  },
+                );
               },
             ),
             ListTile(
-              leading: Icon(Icons.done),
-              title: Text("Completed tasks"),
+              leading: Icon(Icons.settings),
+              title: Text("Settings"),
               onTap: () => Navigator.pop(context),
             ),
-            ListTile(
-                leading: Icon(Icons.settings),
-                title: Text("Settings"),
-                onTap: () => Navigator.pop(context))
           ],
         ),
       ),
-      body: todotasks.isEmpty && completedTasks.isEmpty
+      body: todotasks.isEmpty
           ? const Center(
               child: Text(
                 "No tasks",
                 style: TextStyle(fontSize: 23.0),
               ),
             )
-          : Expanded(
-              child: ListView(
-              children: [
-                if (todotasks.isNotEmpty) ...[
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "To-do",
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
+          : ListView.builder(
+              itemCount: todotasks.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    ListTile(
+                      leading: Checkbox(
+                        value: completed.isNotEmpty && completed[index],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            completed[index] = value!;
+                            if (completed[index]) {
+                              _markTaskAsCompleted(index);
+                            }
+                          });
+                        },
+                      ),
+                      title: Text(
+                        todotasks[index],
+                        style: const TextStyle(fontSize: 18.0),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, size: 19.0),
+                        onPressed: () {
+                          setState(() {
+                            todotasks.removeAt(index);
+                            completed.removeAt(index);
+                          });
+                          _saveTasks();
+                        },
+                      ),
                     ),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: todotasks.length,
-                    itemBuilder: (context, index) {
-                      if (index >= completed.length) {
-                        completed.add(false);
-                      }
-                      return Column(
-                        children: [
-                          ListTile(
-                            leading: Checkbox(
-                              value: completed[index],
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  completed[index] = value!;
-                                  if (completed[index]) {
-                                    completedTasks.add(todotasks[index]);
-                                    todotasks.removeAt(index);
-                                  } else {
-                                    completedTasks.remove(todotasks[index]);
-                                  }
-                                });
-                                _saveTasks();
-                              },
-                            ),
-                            title: Text(
-                              todotasks[index],
-                              style: const TextStyle(fontSize: 18.0),
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, size: 19.0),
-                              onPressed: () {
-                                setState(() {
-                                  todotasks.removeAt(index);
-                                  completed.removeAt(index);
-                                });
-                                _saveTasks();
-                              },
-                            ),
-                          ),
-                          if (index != todotasks.length - 1) const Divider()
-                        ],
-                      );
-                    },
-                  ),
-                ],
-                if (completedTasks.isNotEmpty) ...[
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Completed",
-                      style: TextStyle(
-                          fontSize: 19.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: completedTasks.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          ListTile(
-                            title: Text(
-                              completedTasks[index],
-                              style: const TextStyle(
-                                  fontSize: 18.0,
-                                  decoration: TextDecoration.lineThrough),
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, size: 19.0),
-                              onPressed: () {
-                                setState(() {
-                                  completedTasks.removeAt(index);
-                                });
-                                _saveTasks();
-                              },
-                            ),
-                          ),
-                          if (index != completedTasks.length - 1)
-                            const Divider()
-                        ],
-                      );
-                    },
-                  )
-                ]
-              ],
-            )),
+                    if (index != todotasks.length - 1) const Divider(),
+                  ],
+                );
+              },
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showAddTaskDialog(context);
@@ -215,7 +162,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   void _showAddTaskDialog(BuildContext context) {
     TextEditingController taskController = TextEditingController();
-// Add task dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {

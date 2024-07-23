@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'todoTasks.dart';
@@ -15,9 +17,12 @@ class TodoApp extends StatelessWidget {
       home: const TodoListScreen(),
       onGenerateRoute: (settings) {
         if (settings.name == "/todotasks") {
-          final args = settings.arguments as List<String>;
+          final args = settings.arguments as Map<String, dynamic>;
           return MaterialPageRoute(
-            builder: (context) => TodoTasks(todotasks: args),
+            builder: (context) => TodoTasks(
+              todotasks: args['todotasks'],
+              onTaskComplete: args['onTaskComplete'],
+            ),
           );
         }
         return null;
@@ -25,5 +30,3 @@ class TodoApp extends StatelessWidget {
     );
   }
 }
-// lib/home.dart
-// ignore_for_file: prefer_const_constructors
