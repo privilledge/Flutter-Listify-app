@@ -1,4 +1,3 @@
-// lib/home.dart
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
       appBar: AppBar(
         titleSpacing: 0,
         title: const Text(
-          'Listiffy',
+          'Listify',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.pinkAccent,
@@ -134,6 +133,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                     completedTasks.remove(todotasks[index]);
                                   }
                                 });
+                                _saveTasks();
                               },
                             ),
                             title: Text(
@@ -147,6 +147,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                   todotasks.removeAt(index);
                                   completed.removeAt(index);
                                 });
+                                _saveTasks();
                               },
                             ),
                           ),
@@ -185,6 +186,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                 setState(() {
                                   completedTasks.removeAt(index);
                                 });
+                                _saveTasks();
                               },
                             ),
                           ),
@@ -236,6 +238,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   todotasks.add(taskController.text);
                   completed.add(false);
                 });
+                _saveTasks();
                 Navigator.of(context).pop();
               },
             ),

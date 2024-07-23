@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'todoTasks.dart';
@@ -27,3 +25,5 @@ class TodoApp extends StatelessWidget {
     );
   }
 }
+// lib/home.dart
+// ignore_for_file: prefer_const_constructors
