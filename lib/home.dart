@@ -54,120 +54,126 @@ class _TodoListScreenState extends State<TodoListScreen> {
       appBar: AppBar(
         titleSpacing: 0,
         title: const Text(
-          'Listiffy',
+          'Listify',
           style: TextStyle(color: Colors.white),
         ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () => {},
+            icon: Icon(Icons.account_circle),
+          )
+        ],
         backgroundColor: Colors.pinkAccent,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.pinkAccent),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Menu",
-                    style: TextStyle(fontSize: 20.0, color: Colors.white),
-                  ),
-                  Divider(
-                    color: Color.fromARGB(255, 255, 116, 162),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            const Icon(
-                              Icons.pending_actions,
-                              color: Colors.white,
-                              size: 35.0,
-                            ),
-                            Text(
-                              '${_getPendingTaskCount()} tasks',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: 20),
-                        Column(
-                          children: [
-                            const Icon(
-                              Icons.done,
-                              color: Colors.white,
-                              size: 35.0,
-                            ),
-                            Text(
-                              '${_getCompletedTaskCount()} tasks',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: 20),
-                        const Column(
-                          children: [
-                            Icon(
-                              Icons.account_circle,
-                              color: Colors.white,
-                              size: 35.0,
-                            ),
-                            Text(
-                              "Account",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text("Home"),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              leading: const Icon(Icons.pending_actions),
-              title: const Text("To-do tasks"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(
-                  context,
-                  '/todotasks',
-                  arguments: {
-                    'todotasks': todotasks,
-                    'onTaskComplete': _markTaskAsCompleted,
-                  },
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.done),
-              title: const Text("Completed tasks"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(
-                  context,
-                  '/completedtasks',
-                  arguments: completedTasks,
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text("Settings"),
-              onTap: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-      ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: <Widget>[
+      //       DrawerHeader(
+      //         decoration: const BoxDecoration(color: Colors.pinkAccent),
+      //         child: Column(
+      //           crossAxisAlignment: CrossAxisAlignment.start,
+      //           children: [
+      //             const Text(
+      //               "Menu",
+      //               style: TextStyle(fontSize: 20.0, color: Colors.white),
+      //             ),
+      //             Divider(
+      //               color: Color.fromARGB(255, 255, 116, 162),
+      //             ),
+      //             const SizedBox(height: 10),
+      //             Padding(
+      //               padding: const EdgeInsets.all(8.0),
+      //               child: Row(
+      //                 children: [
+      //                   Column(
+      //                     children: [
+      //                       const Icon(
+      //                         Icons.pending_actions,
+      //                         color: Colors.white,
+      //                         size: 35.0,
+      //                       ),
+      //                       Text(
+      //                         '${_getPendingTaskCount()} tasks',
+      //                         style: const TextStyle(color: Colors.white),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                   const SizedBox(width: 20),
+      //                   Column(
+      //                     children: [
+      //                       const Icon(
+      //                         Icons.done,
+      //                         color: Colors.white,
+      //                         size: 35.0,
+      //                       ),
+      //                       Text(
+      //                         '${_getCompletedTaskCount()} tasks',
+      //                         style: const TextStyle(color: Colors.white),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                   const SizedBox(width: 20),
+      //                   const Column(
+      //                     children: [
+      //                       Icon(
+      //                         Icons.account_circle,
+      //                         color: Colors.white,
+      //                         size: 35.0,
+      //                       ),
+      //                       Text(
+      //                         "Account",
+      //                         style: TextStyle(color: Colors.white),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                 ],
+      //               ),
+      //             )
+      //           ],
+      //         ),
+      //       ),
+      //       ListTile(
+      //         leading: const Icon(Icons.home),
+      //         title: const Text("Home"),
+      //         onTap: () => Navigator.pop(context),
+      //       ),
+      //       ListTile(
+      //         leading: const Icon(Icons.pending_actions),
+      //         title: const Text("To-do tasks"),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           Navigator.pushNamed(
+      //             context,
+      //             '/todotasks',
+      //             arguments: {
+      //               'todotasks': todotasks,
+      //               'onTaskComplete': _markTaskAsCompleted,
+      //             },
+      //           );
+      //         },
+      //       ),
+      //       ListTile(
+      //         leading: const Icon(Icons.done),
+      //         title: const Text("Completed tasks"),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           Navigator.pushNamed(
+      //             context,
+      //             '/completedtasks',
+      //             arguments: completedTasks,
+      //           );
+      //         },
+      //       ),
+      //       ListTile(
+      //         leading: const Icon(Icons.settings),
+      //         title: const Text("Settings"),
+      //         onTap: () => Navigator.pop(context),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: todotasks.isEmpty && completedTasks.isEmpty
           ? const Center(
               child: Text(
@@ -196,34 +202,37 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       }
                       return Column(
                         children: [
-                          ListTile(
-                            leading: Checkbox(
-                              value: completed[index],
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  completed[index] = value!;
-                                  if (completed[index]) {
-                                    completedTasks.add(todotasks[index]);
+                          Padding(
+                            padding: EdgeInsets.zero,
+                            child: ListTile(
+                              leading: Checkbox(
+                                value: completed[index],
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    completed[index] = value!;
+                                    if (completed[index]) {
+                                      completedTasks.add(todotasks[index]);
+                                      todotasks.removeAt(index);
+                                      completed.removeAt(index);
+                                    }
+                                    _saveTasks();
+                                  });
+                                },
+                              ),
+                              title: Text(
+                                todotasks[index],
+                                style: const TextStyle(fontSize: 18.0),
+                              ),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.delete, size: 19.0),
+                                onPressed: () {
+                                  setState(() {
                                     todotasks.removeAt(index);
                                     completed.removeAt(index);
-                                  }
-                                  _saveTasks();
-                                });
-                              },
-                            ),
-                            title: Text(
-                              todotasks[index],
-                              style: const TextStyle(fontSize: 18.0),
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, size: 19.0),
-                              onPressed: () {
-                                setState(() {
-                                  todotasks.removeAt(index);
-                                  completed.removeAt(index);
-                                  _saveTasks();
-                                });
-                              },
+                                    _saveTasks();
+                                  });
+                                },
+                              ),
                             ),
                           ),
                           if (index != todotasks.length - 1) const Divider()
@@ -275,6 +284,21 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ],
               ],
             ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            label: "Home",
+            icon: Icon(
+              Icons.home,
+              color: Colors.pinkAccent,
+            ),
+          ),
+          BottomNavigationBarItem(
+            label: "Settings",
+            icon: Icon(Icons.settings),
+          )
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showAddTaskDialog(context);
