@@ -53,14 +53,20 @@ class _TodoListScreenState extends State<TodoListScreen> {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
-        title: const Text(
-          'Listify',
-          style: TextStyle(color: Colors.white),
+        title: Padding(
+          padding: const EdgeInsets.all(19.0),
+          child: const Text(
+            'Listify',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         actions: <Widget>[
           IconButton(
             onPressed: () => {},
-            icon: Icon(Icons.account_circle),
+            icon: Icon(
+              Icons.account_circle,
+              size: 30.0,
+            ),
           )
         ],
         backgroundColor: Colors.pinkAccent,
@@ -285,17 +291,21 @@ class _TodoListScreenState extends State<TodoListScreen> {
               ],
             ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
             label: "Home",
             icon: Icon(
               Icons.home,
+              size: 35.0,
               color: Colors.pinkAccent,
             ),
           ),
           BottomNavigationBarItem(
             label: "Settings",
-            icon: Icon(Icons.settings),
+            icon: Icon(
+              Icons.settings,
+              size: 35.0,
+            ),
           )
         ],
       ),
@@ -319,10 +329,14 @@ class _TodoListScreenState extends State<TodoListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add text'),
+          title: const Text('Add task'),
           content: TextField(
+            textCapitalization: TextCapitalization.sentences,
             controller: taskController,
-            decoration: const InputDecoration(hintText: 'Enter task'),
+            decoration: const InputDecoration(
+              hintText: 'Enter task',
+              hintStyle: TextStyle(color: Colors.grey),
+            ),
           ),
           actions: [
             TextButton(
