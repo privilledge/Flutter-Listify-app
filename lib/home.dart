@@ -227,10 +227,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
                               ),
                               title: Text(
                                 todotasks[index],
-                                style: const TextStyle(fontSize: 18.0),
+                                style: const TextStyle(fontSize: 17.0),
                               ),
                               trailing: IconButton(
-                                icon: const Icon(Icons.delete, size: 19.0),
+                                icon: const Icon(Icons.delete, size: 20.0),
                                 onPressed: () {
                                   setState(() {
                                     todotasks.removeAt(index);
@@ -264,15 +264,26 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       return Column(
                         children: [
                           ListTile(
+                            leading: Checkbox(
+                              value: true,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  todotasks.add(completedTasks[index]);
+                                  completed.add(false);
+                                  completedTasks.removeAt(index);
+                                  _saveTasks();
+                                });
+                              },
+                            ),
                             title: Text(
                               completedTasks[index],
                               style: const TextStyle(
-                                fontSize: 18.0,
+                                fontSize: 17.0,
                                 decoration: TextDecoration.lineThrough,
                               ),
                             ),
                             trailing: IconButton(
-                              icon: const Icon(Icons.delete, size: 19.0),
+                              icon: const Icon(Icons.delete, size: 20.0),
                               onPressed: () {
                                 setState(() {
                                   completedTasks.removeAt(index);
