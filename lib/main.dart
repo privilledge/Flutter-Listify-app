@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'todoTasks.dart';
-import 'completedTasks.dart';
+import 'settings.dart';
 
 void main() => runApp(const TodoApp());
 
@@ -14,7 +14,7 @@ class TodoApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Todo app',
       theme: ThemeData(primarySwatch: Colors.teal),
-      home: const TodoListScreen(),
+      home: TodoListScreen(),
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/todotasks':
@@ -25,10 +25,10 @@ class TodoApp extends StatelessWidget {
                 onTaskComplete: args['onTaskComplete'],
               ),
             );
-          case '/completedtasks':
+          case '/settings':
             final args = settings.arguments as List<String>;
             return MaterialPageRoute(
-              builder: (context) => CompletedTasks(completedTasks: args),
+              builder: (context) => SettingsPage(),
             );
           default:
             return null;

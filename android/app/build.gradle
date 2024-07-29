@@ -25,8 +25,8 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.todo_app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 33 // explicitly set the compileSdk version
+    ndkVersion = "21.1.6352462" // explicitly set the ndk version or remove this line if you are not using the NDK
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -38,8 +38,8 @@ android {
         applicationId = "com.example.todo_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 21 // explicitly set the minSdk version
+        targetSdk = 33 // explicitly set the targetSdk version
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }
