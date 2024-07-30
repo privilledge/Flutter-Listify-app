@@ -3,7 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'settings.dart'; // Import the SettingsPage
 
 class TodoListScreen extends StatefulWidget {
-  TodoListScreen({super.key});
+  final Function(ThemeMode) onThemeChanged;
+
+  TodoListScreen({super.key, required this.onThemeChanged});
+
   @override
   _TodoListScreenState createState() => _TodoListScreenState();
 }
@@ -39,14 +42,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
     prefs.setStringList('completedTasks', completedTasks);
   }
 
-  int _getPendingTaskCount() {
-    return todotasks.length;
-  }
-
-  int _getCompletedTaskCount() {
-    return completedTasks.length;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +68,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
       ),
       body: _currentIndex == 0
           ? _buildTaskList() // Show todo list or completed tasks
-          : SettingsPage(), // Show settings page
+          : SettingsPage(
+              onThemeChanged: widget.onThemeChanged), // Show settings page
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedItemColor: Colors.pinkAccent,
@@ -145,40 +141,54 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     }
                     return Column(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.zero,
-                          child: ListTile(
-                            leading: Checkbox(
-                              value: completed[index],
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  completed[index] = value!;
-                                  if (completed[index]) {
-                                    completedTasks.add(todotasks[index]);
-                                    todotasks.removeAt(index);
-                                    completed.removeAt(index);
-                                  }
-                                  _saveTasks();
-                                });
-                              },
-                            ),
-                            title: Text(
-                              todotasks[index],
-                              style: const TextStyle(fontSize: 17.0),
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, size: 20.0),
-                              onPressed: () {
-                                setState(() {
-                                  todotasks.removeAt(index);
-                                  completed.removeAt(index);
-                                  _saveTasks();
-                                });
-                              },
+                        Card(
+                          elevation: 1,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: completed[index],
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      completed[index] = value!;
+                                      if (completed[index]) {
+                                        completedTasks.add(todotasks[index]);
+                                        todotasks.removeAt(index);
+                                        completed.removeAt(index);
+                                      }
+                                      _saveTasks();
+                                    });
+                                  },
+                                  activeColor: Colors
+                                      .blue, // Change this color to your desired color
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    todotasks[index],
+                                    style: const TextStyle(fontSize: 17.0),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete, size: 20.0),
+                                  onPressed: () {
+                                    setState(() {
+                                      todotasks.removeAt(index);
+                                      completed.removeAt(index);
+                                      _saveTasks();
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        if (index != todotasks.length - 1) const Divider()
+                        if (index != todotasks.length - 1) const Divider(),
                       ],
                     );
                   },
@@ -200,36 +210,53 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
-                        ListTile(
-                          leading: Checkbox(
-                            value: true,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                todotasks.add(completedTasks[index]);
-                                completed.add(false);
-                                completedTasks.removeAt(index);
-                                _saveTasks();
-                              });
-                            },
+                        Card(
+                          elevation: 1,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
                           ),
-                          title: Text(
-                            completedTasks[index],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                              decoration: TextDecoration.lineThrough,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: true,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      todotasks.add(completedTasks[index]);
+                                      completed.add(false);
+                                      completedTasks.removeAt(index);
+                                      _saveTasks();
+                                    });
+                                  },
+                                  activeColor: Color.fromARGB(255, 255, 210,
+                                      238), // Change this color to your desired color
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    completedTasks[index],
+                                    style: const TextStyle(
+                                      fontSize: 17.0,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete, size: 20.0),
+                                  onPressed: () {
+                                    setState(() {
+                                      completedTasks.removeAt(index);
+                                      _saveTasks();
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete, size: 20.0),
-                            onPressed: () {
-                              setState(() {
-                                completedTasks.removeAt(index);
-                                _saveTasks();
-                              });
-                            },
-                          ),
                         ),
-                        if (index != completedTasks.length - 1) const Divider()
+                        if (index != completedTasks.length - 1) const Divider(),
                       ],
                     );
                   },
